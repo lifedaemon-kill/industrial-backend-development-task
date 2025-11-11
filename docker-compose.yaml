@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    container_name: industrial
+    volumes:
+      - ./api/docs/calc.swagger.json:/app/api/docs/calc.swagger.json
+    ports:
+      - "50051:50051" # grpc
+      - "8080:8080" # http gateway
+      - "8081:8081" # swagger UI (static)
+    restart: unless-stopped
