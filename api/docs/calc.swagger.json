@@ -55,47 +55,7 @@
     }
   },
   "definitions": {
-    "CalcResponseItem": {
-      "type": "object",
-      "properties": {
-        "var": {
-          "type": "string"
-        },
-        "value": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "calculatorCalcRequest": {
-      "type": "object",
-      "properties": {
-        "instruction": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/calculatorInstruction"
-          }
-        }
-      }
-    },
-    "calculatorCalcResponse": {
-      "type": "object",
-      "properties": {
-        "item": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/CalcResponseItem"
-          }
-        },
-        "duration": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "calculatorInstruction": {
+    "CalcRequestInstruction": {
       "type": "object",
       "properties": {
         "type": {
@@ -121,6 +81,46 @@
         },
         "rightVar": {
           "type": "string"
+        }
+      }
+    },
+    "CalcResponseItem": {
+      "type": "object",
+      "properties": {
+        "var": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "calculatorCalcRequest": {
+      "type": "object",
+      "properties": {
+        "instruction": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CalcRequestInstruction"
+          }
+        }
+      }
+    },
+    "calculatorCalcResponse": {
+      "type": "object",
+      "properties": {
+        "item": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CalcResponseItem"
+          }
+        },
+        "duration": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

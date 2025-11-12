@@ -4,7 +4,6 @@ package calculator;
 
 option go_package = "/pkg/calculator";
 
-import "protoc-gen-openapiv2/options/openapiv2.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -29,6 +28,21 @@ service Calculator {
 
 message CalcRequest {
   repeated Instruction instruction = 1;
+
+  message Instruction{
+    Type type = 1;
+    string var = 2;
+    optional Operation op = 3; // "+","-","*"
+
+    oneof left {
+      int64 left_literal = 4;
+      string left_var = 5;
+    }
+    oneof right {
+      int64 right_literal = 6;
+      string right_var = 7;
+    }
+  }
 }
 
 message CalcResponse{
@@ -40,20 +54,6 @@ message CalcResponse{
   }
 
   int32 duration = 3;
-}
-
-message Instruction{
-  Type type = 1;
-  string var = 2;
-  Operation op = 3; // "+","-","*"
-  oneof left {
-    int64 left_literal = 4;
-    string left_var = 5;
-  }
-  oneof right {
-    int64 right_literal = 6;
-    string right_var = 7;
-  }
 }
 
 enum Operation {

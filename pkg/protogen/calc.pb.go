@@ -122,8 +122,8 @@ func (Type) EnumDescriptor() ([]byte, []int) {
 }
 
 type CalcRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Instruction   []*Instruction         `protobuf:"bytes,1,rep,name=instruction,proto3" json:"instruction,omitempty"`
+	state         protoimpl.MessageState     `protogen:"open.v1"`
+	Instruction   []*CalcRequest_Instruction `protobuf:"bytes,1,rep,name=instruction,proto3" json:"instruction,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -158,7 +158,7 @@ func (*CalcRequest) Descriptor() ([]byte, []int) {
 	return file_calc_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CalcRequest) GetInstruction() []*Instruction {
+func (x *CalcRequest) GetInstruction() []*CalcRequest_Instruction {
 	if x != nil {
 		return x.Instruction
 	}
@@ -217,39 +217,39 @@ func (x *CalcResponse) GetDuration() int32 {
 	return 0
 }
 
-type Instruction struct {
+type CalcRequest_Instruction struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Type  Type                   `protobuf:"varint,1,opt,name=type,proto3,enum=calculator.Type" json:"type,omitempty"`
 	Var   string                 `protobuf:"bytes,2,opt,name=var,proto3" json:"var,omitempty"`
-	Op    Operation              `protobuf:"varint,3,opt,name=op,proto3,enum=calculator.Operation" json:"op,omitempty"` // "+","-","*"
+	Op    *Operation             `protobuf:"varint,3,opt,name=op,proto3,enum=calculator.Operation,oneof" json:"op,omitempty"` // "+","-","*"
 	// Types that are valid to be assigned to Left:
 	//
-	//	*Instruction_LeftLiteral
-	//	*Instruction_LeftVar
-	Left isInstruction_Left `protobuf_oneof:"left"`
+	//	*CalcRequest_Instruction_LeftLiteral
+	//	*CalcRequest_Instruction_LeftVar
+	Left isCalcRequest_Instruction_Left `protobuf_oneof:"left"`
 	// Types that are valid to be assigned to Right:
 	//
-	//	*Instruction_RightLiteral
-	//	*Instruction_RightVar
-	Right         isInstruction_Right `protobuf_oneof:"right"`
+	//	*CalcRequest_Instruction_RightLiteral
+	//	*CalcRequest_Instruction_RightVar
+	Right         isCalcRequest_Instruction_Right `protobuf_oneof:"right"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Instruction) Reset() {
-	*x = Instruction{}
+func (x *CalcRequest_Instruction) Reset() {
+	*x = CalcRequest_Instruction{}
 	mi := &file_calc_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Instruction) String() string {
+func (x *CalcRequest_Instruction) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Instruction) ProtoMessage() {}
+func (*CalcRequest_Instruction) ProtoMessage() {}
 
-func (x *Instruction) ProtoReflect() protoreflect.Message {
+func (x *CalcRequest_Instruction) ProtoReflect() protoreflect.Message {
 	mi := &file_calc_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -261,113 +261,113 @@ func (x *Instruction) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Instruction.ProtoReflect.Descriptor instead.
-func (*Instruction) Descriptor() ([]byte, []int) {
-	return file_calc_proto_rawDescGZIP(), []int{2}
+// Deprecated: Use CalcRequest_Instruction.ProtoReflect.Descriptor instead.
+func (*CalcRequest_Instruction) Descriptor() ([]byte, []int) {
+	return file_calc_proto_rawDescGZIP(), []int{0, 0}
 }
 
-func (x *Instruction) GetType() Type {
+func (x *CalcRequest_Instruction) GetType() Type {
 	if x != nil {
 		return x.Type
 	}
 	return Type_Calc
 }
 
-func (x *Instruction) GetVar() string {
+func (x *CalcRequest_Instruction) GetVar() string {
 	if x != nil {
 		return x.Var
 	}
 	return ""
 }
 
-func (x *Instruction) GetOp() Operation {
-	if x != nil {
-		return x.Op
+func (x *CalcRequest_Instruction) GetOp() Operation {
+	if x != nil && x.Op != nil {
+		return *x.Op
 	}
 	return Operation_NotSpecified
 }
 
-func (x *Instruction) GetLeft() isInstruction_Left {
+func (x *CalcRequest_Instruction) GetLeft() isCalcRequest_Instruction_Left {
 	if x != nil {
 		return x.Left
 	}
 	return nil
 }
 
-func (x *Instruction) GetLeftLiteral() int64 {
+func (x *CalcRequest_Instruction) GetLeftLiteral() int64 {
 	if x != nil {
-		if x, ok := x.Left.(*Instruction_LeftLiteral); ok {
+		if x, ok := x.Left.(*CalcRequest_Instruction_LeftLiteral); ok {
 			return x.LeftLiteral
 		}
 	}
 	return 0
 }
 
-func (x *Instruction) GetLeftVar() string {
+func (x *CalcRequest_Instruction) GetLeftVar() string {
 	if x != nil {
-		if x, ok := x.Left.(*Instruction_LeftVar); ok {
+		if x, ok := x.Left.(*CalcRequest_Instruction_LeftVar); ok {
 			return x.LeftVar
 		}
 	}
 	return ""
 }
 
-func (x *Instruction) GetRight() isInstruction_Right {
+func (x *CalcRequest_Instruction) GetRight() isCalcRequest_Instruction_Right {
 	if x != nil {
 		return x.Right
 	}
 	return nil
 }
 
-func (x *Instruction) GetRightLiteral() int64 {
+func (x *CalcRequest_Instruction) GetRightLiteral() int64 {
 	if x != nil {
-		if x, ok := x.Right.(*Instruction_RightLiteral); ok {
+		if x, ok := x.Right.(*CalcRequest_Instruction_RightLiteral); ok {
 			return x.RightLiteral
 		}
 	}
 	return 0
 }
 
-func (x *Instruction) GetRightVar() string {
+func (x *CalcRequest_Instruction) GetRightVar() string {
 	if x != nil {
-		if x, ok := x.Right.(*Instruction_RightVar); ok {
+		if x, ok := x.Right.(*CalcRequest_Instruction_RightVar); ok {
 			return x.RightVar
 		}
 	}
 	return ""
 }
 
-type isInstruction_Left interface {
-	isInstruction_Left()
+type isCalcRequest_Instruction_Left interface {
+	isCalcRequest_Instruction_Left()
 }
 
-type Instruction_LeftLiteral struct {
+type CalcRequest_Instruction_LeftLiteral struct {
 	LeftLiteral int64 `protobuf:"varint,4,opt,name=left_literal,json=leftLiteral,proto3,oneof"`
 }
 
-type Instruction_LeftVar struct {
+type CalcRequest_Instruction_LeftVar struct {
 	LeftVar string `protobuf:"bytes,5,opt,name=left_var,json=leftVar,proto3,oneof"`
 }
 
-func (*Instruction_LeftLiteral) isInstruction_Left() {}
+func (*CalcRequest_Instruction_LeftLiteral) isCalcRequest_Instruction_Left() {}
 
-func (*Instruction_LeftVar) isInstruction_Left() {}
+func (*CalcRequest_Instruction_LeftVar) isCalcRequest_Instruction_Left() {}
 
-type isInstruction_Right interface {
-	isInstruction_Right()
+type isCalcRequest_Instruction_Right interface {
+	isCalcRequest_Instruction_Right()
 }
 
-type Instruction_RightLiteral struct {
+type CalcRequest_Instruction_RightLiteral struct {
 	RightLiteral int64 `protobuf:"varint,6,opt,name=right_literal,json=rightLiteral,proto3,oneof"`
 }
 
-type Instruction_RightVar struct {
+type CalcRequest_Instruction_RightVar struct {
 	RightVar string `protobuf:"bytes,7,opt,name=right_var,json=rightVar,proto3,oneof"`
 }
 
-func (*Instruction_RightLiteral) isInstruction_Right() {}
+func (*CalcRequest_Instruction_RightLiteral) isCalcRequest_Instruction_Right() {}
 
-func (*Instruction_RightVar) isInstruction_Right() {}
+func (*CalcRequest_Instruction_RightVar) isCalcRequest_Instruction_Right() {}
 
 type CalcResponse_Item struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -427,25 +427,26 @@ const file_calc_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
 	"calc.proto\x12\n" +
-	"calculator\x1a,protoc-gen-openapiv2/options/openapiv2.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"H\n" +
-	"\vCalcRequest\x129\n" +
-	"\vinstruction\x18\x01 \x03(\v2\x17.calculator.InstructionR\vinstruction\"\x8d\x01\n" +
-	"\fCalcResponse\x121\n" +
-	"\x04item\x18\x01 \x03(\v2\x1d.calculator.CalcResponse.ItemR\x04item\x12\x1a\n" +
-	"\bduration\x18\x03 \x01(\x05R\bduration\x1a.\n" +
-	"\x04Item\x12\x10\n" +
-	"\x03var\x18\x01 \x01(\tR\x03var\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x05R\x05value\"\x85\x02\n" +
+	"calculator\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xe8\x02\n" +
+	"\vCalcRequest\x12E\n" +
+	"\vinstruction\x18\x01 \x03(\v2#.calculator.CalcRequest.InstructionR\vinstruction\x1a\x91\x02\n" +
 	"\vInstruction\x12$\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x10.calculator.TypeR\x04type\x12\x10\n" +
-	"\x03var\x18\x02 \x01(\tR\x03var\x12%\n" +
-	"\x02op\x18\x03 \x01(\x0e2\x15.calculator.OperationR\x02op\x12#\n" +
+	"\x03var\x18\x02 \x01(\tR\x03var\x12*\n" +
+	"\x02op\x18\x03 \x01(\x0e2\x15.calculator.OperationH\x02R\x02op\x88\x01\x01\x12#\n" +
 	"\fleft_literal\x18\x04 \x01(\x03H\x00R\vleftLiteral\x12\x1b\n" +
 	"\bleft_var\x18\x05 \x01(\tH\x00R\aleftVar\x12%\n" +
 	"\rright_literal\x18\x06 \x01(\x03H\x01R\frightLiteral\x12\x1d\n" +
 	"\tright_var\x18\a \x01(\tH\x01R\brightVarB\x06\n" +
 	"\x04leftB\a\n" +
-	"\x05right*G\n" +
+	"\x05rightB\x05\n" +
+	"\x03_op\"\x8d\x01\n" +
+	"\fCalcResponse\x121\n" +
+	"\x04item\x18\x01 \x03(\v2\x1d.calculator.CalcResponse.ItemR\x04item\x12\x1a\n" +
+	"\bduration\x18\x03 \x01(\x05R\bduration\x1a.\n" +
+	"\x04Item\x12\x10\n" +
+	"\x03var\x18\x01 \x01(\tR\x03var\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x05R\x05value*G\n" +
 	"\tOperation\x12\x10\n" +
 	"\fNotSpecified\x10\x00\x12\b\n" +
 	"\x04Plus\x10\x01\x12\x10\n" +
@@ -474,18 +475,18 @@ func file_calc_proto_rawDescGZIP() []byte {
 var file_calc_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_calc_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_calc_proto_goTypes = []any{
-	(Operation)(0),            // 0: calculator.Operation
-	(Type)(0),                 // 1: calculator.Type
-	(*CalcRequest)(nil),       // 2: calculator.CalcRequest
-	(*CalcResponse)(nil),      // 3: calculator.CalcResponse
-	(*Instruction)(nil),       // 4: calculator.Instruction
-	(*CalcResponse_Item)(nil), // 5: calculator.CalcResponse.Item
+	(Operation)(0),                  // 0: calculator.Operation
+	(Type)(0),                       // 1: calculator.Type
+	(*CalcRequest)(nil),             // 2: calculator.CalcRequest
+	(*CalcResponse)(nil),            // 3: calculator.CalcResponse
+	(*CalcRequest_Instruction)(nil), // 4: calculator.CalcRequest.Instruction
+	(*CalcResponse_Item)(nil),       // 5: calculator.CalcResponse.Item
 }
 var file_calc_proto_depIdxs = []int32{
-	4, // 0: calculator.CalcRequest.instruction:type_name -> calculator.Instruction
+	4, // 0: calculator.CalcRequest.instruction:type_name -> calculator.CalcRequest.Instruction
 	5, // 1: calculator.CalcResponse.item:type_name -> calculator.CalcResponse.Item
-	1, // 2: calculator.Instruction.type:type_name -> calculator.Type
-	0, // 3: calculator.Instruction.op:type_name -> calculator.Operation
+	1, // 2: calculator.CalcRequest.Instruction.type:type_name -> calculator.Type
+	0, // 3: calculator.CalcRequest.Instruction.op:type_name -> calculator.Operation
 	2, // 4: calculator.Calculator.Calc:input_type -> calculator.CalcRequest
 	3, // 5: calculator.Calculator.Calc:output_type -> calculator.CalcResponse
 	5, // [5:6] is the sub-list for method output_type
@@ -501,10 +502,10 @@ func file_calc_proto_init() {
 		return
 	}
 	file_calc_proto_msgTypes[2].OneofWrappers = []any{
-		(*Instruction_LeftLiteral)(nil),
-		(*Instruction_LeftVar)(nil),
-		(*Instruction_RightLiteral)(nil),
-		(*Instruction_RightVar)(nil),
+		(*CalcRequest_Instruction_LeftLiteral)(nil),
+		(*CalcRequest_Instruction_LeftVar)(nil),
+		(*CalcRequest_Instruction_RightLiteral)(nil),
+		(*CalcRequest_Instruction_RightVar)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

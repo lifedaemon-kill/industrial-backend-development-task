@@ -16,7 +16,6 @@ import (
 	grpcHandler "github.com/lifedaemon-kill/industrial-backend-development-task/internal/handler"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/lifedaemon-kill/industrial-backend-development-task/internal/service"
 	desc "github.com/lifedaemon-kill/industrial-backend-development-task/pkg/protogen"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"google.golang.org/grpc"
@@ -57,8 +56,7 @@ func startGRPC(ctx context.Context) {
 	if err != nil {
 		log.Fatal("failed to listen:", err)
 	}
-	calcService := service.New()
-	grpcH := grpcHandler.New(calcService)
+	grpcH := grpcHandler.NewCalculatorServer()
 	grpcServer := grpc.NewServer()
 	desc.RegisterCalculatorServer(grpcServer, grpcH)
 

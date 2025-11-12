@@ -2,35 +2,42 @@ package handler
 
 import (
 	"context"
+	"runtime"
 	"time"
 
+	"github.com/lifedaemon-kill/industrial-backend-development-task/internal/executor"
 	calculator "github.com/lifedaemon-kill/industrial-backend-development-task/pkg/protogen"
 )
 
-type Service interface {
-	Calc(context.Context, []*calculator.Command) ([]*calculator.CalcResponse_Item, error)
-}
-
-type Handler struct {
-	service Service
+type CalculatorServer struct {
 	calculator.UnimplementedCalculatorServer
 }
 
-func New(service Service) *Handler {
-	return &Handler{service: service}
+func NewCalculatorServer() *CalculatorServer {
+	return &CalculatorServer{}
 }
 
-func (h Handler) Calc(ctx context.Context, req *calculator.CalcRequest) (*calculator.CalcResponse, error) {
+func (s *CalculatorServer) Calc(_ context.Context, req *calculator.CalcRequest) (*calculator.CalcResponse, error) {
 	start := time.Now()
-	items, err := h.service.Calc(ctx, req.Commands)
-	end := time.Now()
-	duration := end.Sub(start).Milliseconds()
+
+	service := executor.NewExecutor(req.Instruction, runtime.GOMAXPROCS(0))
+	values, err := service.Execute()
 	if err != nil {
 		return nil, err
 	}
 
-	return &calculator.CalcResponse{
-		Item:     items,
-		Duration: int32(duration),
-	}, nil
+	resp := &calculator.CalcResponse{}
+	for _, instr := range req.Instruction {
+		if instr.Type == calculator.Type_Print {
+			if v, ok := values[instr.Var]; ok {
+				resp.Item = append(resp.Item, &calculator.CalcResponse_Item{
+					Var:   instr.Var,
+					Value: int32(v),
+				})
+			}
+		}
+	}
+
+	resp.Duration = int32(time.Since(start).Milliseconds())
+	return resp, nil
 }
