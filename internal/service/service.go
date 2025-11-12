@@ -10,7 +10,7 @@ import (
 type Executor interface {
 	AddTaskCalc(*calculator.CalcCommand)
 	AddTaskPrint(*calculator.PrintCommand)
-	Execute() []calculator.CalcResponse_Item
+	Execute() []*calculator.CalcResponse_Item
 }
 
 type Service struct {
@@ -23,7 +23,7 @@ func New(executor Executor) *Service {
 	}
 }
 
-func (s *Service) Calc(ctx context.Context, commands []*calculator.Command) ([]calculator.CalcResponse_Item, error) {
+func (s *Service) Calc(ctx context.Context, commands []*calculator.Command) ([]*calculator.CalcResponse_Item, error) {
 	for _, command := range commands {
 		switch command.Type {
 		case calculator.Type_Calc:

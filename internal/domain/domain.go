@@ -1,11 +1,6 @@
 package domain
 
-type PrintCommand struct {
-	Type string
-	Var  string
-}
-
-type CalcCommand struct {
+type Command struct {
 	Type      string
 	Operation string
 	Var       string

@@ -4,12 +4,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/lifedaemon-kill/industrial-backend-development-task/internal/domain"
 	calculator "github.com/lifedaemon-kill/industrial-backend-development-task/pkg/protogen"
 )
 
 type Service interface {
-	Calc(context.Context, []*calculator.Command) ([]domain.Var, error)
+	Calc(context.Context, []*calculator.Command) ([]*calculator.CalcResponse_Item, error)
 }
 
 type Handler struct {
@@ -30,14 +29,8 @@ func (h Handler) Calc(ctx context.Context, req *calculator.CalcRequest) (*calcul
 		return nil, err
 	}
 
-	arr := make([]*calculator.CalcResponse_Item, len(items))
-	for i, item := range items {
-		arr[i].Var = item.Key
-		arr[i].Value = item.Value
-	}
-
 	return &calculator.CalcResponse{
-		Item:     arr,
-		Duration: duration,
+		Item:     items,
+		Duration: int32(duration),
 	}, nil
 }
