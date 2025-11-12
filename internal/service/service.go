@@ -7,22 +7,32 @@ import (
 	calculator "github.com/lifedaemon-kill/industrial-backend-development-task/pkg/protogen"
 )
 
+type Strategy interface {
+	AddTaskCalc()
+	AddTaskPrint()
+	Execute() ([]domain.Var, error)
+}
 type Service struct {
+	strategy Strategy
 }
 
-func New() *Service {
-	return &Service{}
+func New(strategy Strategy) *Service {
+	return &Service{
+		strategy: strategy,
+	}
 }
 
-func (s *Service) Calc(ctx context.Context, req *calculator.CalcRequest) []domain.Var {
+func (s *Service) Calc(ctx context.Context, req *calculator.CalcRequest) ([]domain.Var, error) {
 	for _, cmd := range req.Commands {
 		switch cmd.Type {
 		case "calc":
-			return nil
-
+			_ = cmd.GetCalc()
+			s.strategy.AddTaskCalc()
 		case "print":
-			return nil
+			_ = cmd.GetPrint()
+			s.strategy.AddTaskPrint()
 		}
 	}
-	return []domain.Var{}
+
+	return s.strategy.Execute()
 }
