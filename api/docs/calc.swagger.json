@@ -67,31 +67,14 @@
         }
       }
     },
-    "calculatorCalcCommand": {
-      "type": "object",
-      "properties": {
-        "op": {
-          "$ref": "#/definitions/calculatorOperation"
-        },
-        "var": {
-          "type": "string"
-        },
-        "left": {
-          "type": "string"
-        },
-        "right": {
-          "type": "string"
-        }
-      }
-    },
     "calculatorCalcRequest": {
       "type": "object",
       "properties": {
-        "commands": {
+        "instruction": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/calculatorCommand"
+            "$ref": "#/definitions/calculatorInstruction"
           }
         }
       }
@@ -112,36 +95,44 @@
         }
       }
     },
-    "calculatorCommand": {
+    "calculatorInstruction": {
       "type": "object",
       "properties": {
         "type": {
           "$ref": "#/definitions/calculatorType"
         },
-        "calc": {
-          "$ref": "#/definitions/calculatorCalcCommand"
+        "var": {
+          "type": "string"
         },
-        "print": {
-          "$ref": "#/definitions/calculatorPrintCommand"
+        "op": {
+          "$ref": "#/definitions/calculatorOperation",
+          "title": "\"+\",\"-\",\"*\""
+        },
+        "leftLiteral": {
+          "type": "string",
+          "format": "int64"
+        },
+        "leftVar": {
+          "type": "string"
+        },
+        "rightLiteral": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rightVar": {
+          "type": "string"
         }
       }
     },
     "calculatorOperation": {
       "type": "string",
       "enum": [
+        "NotSpecified",
         "Plus",
         "Substraction",
         "Multiply"
       ],
-      "default": "Plus"
-    },
-    "calculatorPrintCommand": {
-      "type": "object",
-      "properties": {
-        "var": {
-          "type": "string"
-        }
-      }
+      "default": "NotSpecified"
     },
     "calculatorType": {
       "type": "string",

@@ -28,7 +28,7 @@ service Calculator {
 }
 
 message CalcRequest {
-  repeated Command commands = 1;
+  repeated Instruction instruction = 1;
 }
 
 message CalcResponse{
@@ -42,30 +42,25 @@ message CalcResponse{
   int32 duration = 3;
 }
 
-message Command {
+message Instruction{
   Type type = 1;
-
-  oneof command {
-    CalcCommand calc = 2;
-    PrintCommand print = 3;
+  string var = 2;
+  Operation op = 3; // "+","-","*"
+  oneof left {
+    int64 left_literal = 4;
+    string left_var = 5;
+  }
+  oneof right {
+    int64 right_literal = 6;
+    string right_var = 7;
   }
 }
 
-message CalcCommand {
-  Operation op = 1;
-  string var = 2;
-  string left = 4;
-  string right = 5;
-}
-
-message PrintCommand {
-  string var = 1;
-}
-
-enum Operation{;
-  Plus = 0;
-  Substraction = 1;
-  Multiply = 2;
+enum Operation {
+  NotSpecified = 0;
+  Plus = 1;
+  Substraction = 2;
+  Multiply = 3;
 }
 
 enum Type {

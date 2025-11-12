@@ -29,12 +29,12 @@ output
 input
 ```json
 [
-  { "type": "calc", "op": "+", "var": "x",   "left": 10,  "right": 2  },
-  { "type": "print",             "var": "x"                     },
-  { "type": "calc", "op": "-", "var": "y",   "left": "x",  "right": 3  },
+  { "type": "calc", "op": "+", "var": "x",   "left": 10,  "right": 2    },
+  { "type": "print",           "var": "x"                               },
+  { "type": "calc", "op": "-", "var": "y",   "left": "x",  "right": 3   },
   { "type": "calc", "op": "*", "var": "z",   "left": "x",  "right": "y" },
-  { "type": "print",             "var": "w"                     },
-  { "type": "calc", "op": "*", "var": "w",   "left": "z",  "right": 0  }
+  { "type": "print",           "var": "w"                               },
+  { "type": "calc", "op": "*", "var": "w",   "left": "z",  "right": 0   }
 ]
 ```
 
@@ -56,11 +56,11 @@ input
   { "type": "calc", "op": "-", "var": "q",        "left": "y",  "right": 20   },
   { "type": "calc", "op": "+", "var": "unusedA",  "left": "y",  "right": 100  },
   { "type": "calc", "op": "*", "var": "unusedB",  "left": "unusedA", "right": 2 },
-  { "type": "print",             "var": "q"                        },
+  { "type": "print",           "var": "q"                                     },
   { "type": "calc", "op": "-", "var": "z",        "left": "x",  "right": 15   },
-  { "type": "print",             "var": "z"                        },
+  { "type": "print",           "var": "z"                                     },
   { "type": "calc", "op": "+", "var": "ignoreC",  "left": "z",  "right": "y"  },
-  { "type": "print",             "var": "x"                        }
+  { "type": "print",           "var": "x"                                     }
 ]
 ```
 
