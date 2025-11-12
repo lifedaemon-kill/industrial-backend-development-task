@@ -1,9 +1,14 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Industrial Calculator",
-    "version": "version not set"
+    "title": "Калькулятор",
+    "version": "1.0.0",
+    "description": "gRPC / http приложение для подсчета и вывода значений"
   },
+  "host": "localhost:8080",
+  "schemes": [
+    "http"
+  ],
   "tags": [
     {
       "name": "Calculator"
@@ -47,52 +52,92 @@
           "Calculator"
         ]
       }
-    },
-    "/api/print": {
-      "post": {
-        "operationId": "Calculator_Print",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/calculatorPrintResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/calculatorPrintRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Calculator"
-        ]
-      }
     }
   },
   "definitions": {
+    "CalcResponseItem": {
+      "type": "object",
+      "properties": {
+        "var": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "calculatorCalcCommand": {
+      "type": "object",
+      "properties": {
+        "op": {
+          "type": "string"
+        },
+        "var": {
+          "type": "string"
+        },
+        "sign": {
+          "type": "string"
+        },
+        "left": {
+          "type": "number",
+          "format": "float"
+        },
+        "right": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
     "calculatorCalcRequest": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/calculatorCommand"
+          }
+        }
+      }
     },
     "calculatorCalcResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "item": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CalcResponseItem"
+          }
+        },
+        "duration": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
     },
-    "calculatorPrintRequest": {
-      "type": "object"
+    "calculatorCommand": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "calc": {
+          "$ref": "#/definitions/calculatorCalcCommand"
+        },
+        "print": {
+          "$ref": "#/definitions/calculatorPrintCommand"
+        }
+      }
     },
-    "calculatorPrintResponse": {
-      "type": "object"
+    "calculatorPrintCommand": {
+      "type": "object",
+      "properties": {
+        "var": {
+          "type": "string"
+        }
+      }
     },
     "protobufAny": {
       "type": "object",

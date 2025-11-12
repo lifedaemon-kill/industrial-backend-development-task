@@ -24,6 +24,7 @@ const (
 
 type CalcRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Commands      []*Command             `protobuf:"bytes,1,rep,name=commands,proto3" json:"commands,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,8 +59,17 @@ func (*CalcRequest) Descriptor() ([]byte, []int) {
 	return file_calc_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *CalcRequest) GetCommands() []*Command {
+	if x != nil {
+		return x.Commands
+	}
+	return nil
+}
+
 type CalcResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Item          []*CalcResponse_Item   `protobuf:"bytes,1,rep,name=item,proto3" json:"item,omitempty"`
+	Duration      int64                  `protobuf:"varint,3,opt,name=duration,proto3" json:"duration,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -94,26 +104,46 @@ func (*CalcResponse) Descriptor() ([]byte, []int) {
 	return file_calc_proto_rawDescGZIP(), []int{1}
 }
 
-type PrintRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+func (x *CalcResponse) GetItem() []*CalcResponse_Item {
+	if x != nil {
+		return x.Item
+	}
+	return nil
+}
+
+func (x *CalcResponse) GetDuration() int64 {
+	if x != nil {
+		return x.Duration
+	}
+	return 0
+}
+
+type Command struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Type  string                 `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+	// Types that are valid to be assigned to Command:
+	//
+	//	*Command_Calc
+	//	*Command_Print
+	Command       isCommand_Command `protobuf_oneof:"command"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PrintRequest) Reset() {
-	*x = PrintRequest{}
+func (x *Command) Reset() {
+	*x = Command{}
 	mi := &file_calc_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PrintRequest) String() string {
+func (x *Command) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PrintRequest) ProtoMessage() {}
+func (*Command) ProtoMessage() {}
 
-func (x *PrintRequest) ProtoReflect() protoreflect.Message {
+func (x *Command) ProtoReflect() protoreflect.Message {
 	mi := &file_calc_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -125,31 +155,84 @@ func (x *PrintRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PrintRequest.ProtoReflect.Descriptor instead.
-func (*PrintRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use Command.ProtoReflect.Descriptor instead.
+func (*Command) Descriptor() ([]byte, []int) {
 	return file_calc_proto_rawDescGZIP(), []int{2}
 }
 
-type PrintResponse struct {
+func (x *Command) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *Command) GetCommand() isCommand_Command {
+	if x != nil {
+		return x.Command
+	}
+	return nil
+}
+
+func (x *Command) GetCalc() *CalcCommand {
+	if x != nil {
+		if x, ok := x.Command.(*Command_Calc); ok {
+			return x.Calc
+		}
+	}
+	return nil
+}
+
+func (x *Command) GetPrint() *PrintCommand {
+	if x != nil {
+		if x, ok := x.Command.(*Command_Print); ok {
+			return x.Print
+		}
+	}
+	return nil
+}
+
+type isCommand_Command interface {
+	isCommand_Command()
+}
+
+type Command_Calc struct {
+	Calc *CalcCommand `protobuf:"bytes,2,opt,name=calc,proto3,oneof"`
+}
+
+type Command_Print struct {
+	Print *PrintCommand `protobuf:"bytes,3,opt,name=print,proto3,oneof"`
+}
+
+func (*Command_Calc) isCommand_Command() {}
+
+func (*Command_Print) isCommand_Command() {}
+
+type CalcCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Op            string                 `protobuf:"bytes,1,opt,name=op,proto3" json:"op,omitempty"`
+	Var           string                 `protobuf:"bytes,2,opt,name=var,proto3" json:"var,omitempty"`
+	Sign          string                 `protobuf:"bytes,3,opt,name=sign,proto3" json:"sign,omitempty"`
+	Left          float32                `protobuf:"fixed32,4,opt,name=left,proto3" json:"left,omitempty"`
+	Right         float32                `protobuf:"fixed32,5,opt,name=right,proto3" json:"right,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PrintResponse) Reset() {
-	*x = PrintResponse{}
+func (x *CalcCommand) Reset() {
+	*x = CalcCommand{}
 	mi := &file_calc_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PrintResponse) String() string {
+func (x *CalcCommand) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PrintResponse) ProtoMessage() {}
+func (*CalcCommand) ProtoMessage() {}
 
-func (x *PrintResponse) ProtoReflect() protoreflect.Message {
+func (x *CalcCommand) ProtoReflect() protoreflect.Message {
 	mi := &file_calc_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -161,9 +244,140 @@ func (x *PrintResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PrintResponse.ProtoReflect.Descriptor instead.
-func (*PrintResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CalcCommand.ProtoReflect.Descriptor instead.
+func (*CalcCommand) Descriptor() ([]byte, []int) {
 	return file_calc_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CalcCommand) GetOp() string {
+	if x != nil {
+		return x.Op
+	}
+	return ""
+}
+
+func (x *CalcCommand) GetVar() string {
+	if x != nil {
+		return x.Var
+	}
+	return ""
+}
+
+func (x *CalcCommand) GetSign() string {
+	if x != nil {
+		return x.Sign
+	}
+	return ""
+}
+
+func (x *CalcCommand) GetLeft() float32 {
+	if x != nil {
+		return x.Left
+	}
+	return 0
+}
+
+func (x *CalcCommand) GetRight() float32 {
+	if x != nil {
+		return x.Right
+	}
+	return 0
+}
+
+type PrintCommand struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Var           string                 `protobuf:"bytes,1,opt,name=var,proto3" json:"var,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PrintCommand) Reset() {
+	*x = PrintCommand{}
+	mi := &file_calc_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PrintCommand) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrintCommand) ProtoMessage() {}
+
+func (x *PrintCommand) ProtoReflect() protoreflect.Message {
+	mi := &file_calc_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PrintCommand.ProtoReflect.Descriptor instead.
+func (*PrintCommand) Descriptor() ([]byte, []int) {
+	return file_calc_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *PrintCommand) GetVar() string {
+	if x != nil {
+		return x.Var
+	}
+	return ""
+}
+
+type CalcResponse_Item struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Var           string                 `protobuf:"bytes,1,opt,name=var,proto3" json:"var,omitempty"`
+	Value         float32                `protobuf:"fixed32,2,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CalcResponse_Item) Reset() {
+	*x = CalcResponse_Item{}
+	mi := &file_calc_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CalcResponse_Item) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CalcResponse_Item) ProtoMessage() {}
+
+func (x *CalcResponse_Item) ProtoReflect() protoreflect.Message {
+	mi := &file_calc_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CalcResponse_Item.ProtoReflect.Descriptor instead.
+func (*CalcResponse_Item) Descriptor() ([]byte, []int) {
+	return file_calc_proto_rawDescGZIP(), []int{1, 0}
+}
+
+func (x *CalcResponse_Item) GetVar() string {
+	if x != nil {
+		return x.Var
+	}
+	return ""
+}
+
+func (x *CalcResponse_Item) GetValue() float32 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
 }
 
 var File_calc_proto protoreflect.FileDescriptor
@@ -172,16 +386,31 @@ const file_calc_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
 	"calc.proto\x12\n" +
-	"calculator\x1a\x1cgoogle/api/annotations.proto\"\r\n" +
-	"\vCalcRequest\"\x0e\n" +
-	"\fCalcResponse\"\x0e\n" +
-	"\fPrintRequest\"\x0f\n" +
-	"\rPrintResponse2\xb2\x01\n" +
+	"calculator\x1a\x1cgoogle/api/annotations.proto\">\n" +
+	"\vCalcRequest\x12/\n" +
+	"\bcommands\x18\x01 \x03(\v2\x13.calculator.CommandR\bcommands\"\x8d\x01\n" +
+	"\fCalcResponse\x121\n" +
+	"\x04item\x18\x01 \x03(\v2\x1d.calculator.CalcResponse.ItemR\x04item\x12\x1a\n" +
+	"\bduration\x18\x03 \x01(\x03R\bduration\x1a.\n" +
+	"\x04Item\x12\x10\n" +
+	"\x03var\x18\x01 \x01(\tR\x03var\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x02R\x05value\"\x89\x01\n" +
+	"\aCommand\x12\x12\n" +
+	"\x04type\x18\x01 \x01(\tR\x04type\x12-\n" +
+	"\x04calc\x18\x02 \x01(\v2\x17.calculator.CalcCommandH\x00R\x04calc\x120\n" +
+	"\x05print\x18\x03 \x01(\v2\x18.calculator.PrintCommandH\x00R\x05printB\t\n" +
+	"\acommand\"m\n" +
+	"\vCalcCommand\x12\x0e\n" +
+	"\x02op\x18\x01 \x01(\tR\x02op\x12\x10\n" +
+	"\x03var\x18\x02 \x01(\tR\x03var\x12\x12\n" +
+	"\x04sign\x18\x03 \x01(\tR\x04sign\x12\x12\n" +
+	"\x04left\x18\x04 \x01(\x02R\x04left\x12\x14\n" +
+	"\x05right\x18\x05 \x01(\x02R\x05right\" \n" +
+	"\fPrintCommand\x12\x10\n" +
+	"\x03var\x18\x01 \x01(\tR\x03var2]\n" +
 	"\n" +
 	"Calculator\x12O\n" +
-	"\x04Calc\x12\x17.calculator.CalcRequest\x1a\x18.calculator.CalcResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/api/calc\x12S\n" +
-	"\x05Print\x12\x18.calculator.PrintRequest\x1a\x19.calculator.PrintResponse\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
-	"/api/printB\x11Z\x0f/pkg/calculatorb\x06proto3"
+	"\x04Calc\x12\x17.calculator.CalcRequest\x1a\x18.calculator.CalcResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/api/calcB\x11Z\x0f/pkg/calculatorb\x06proto3"
 
 var (
 	file_calc_proto_rawDescOnce sync.Once
@@ -195,23 +424,27 @@ func file_calc_proto_rawDescGZIP() []byte {
 	return file_calc_proto_rawDescData
 }
 
-var file_calc_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_calc_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_calc_proto_goTypes = []any{
-	(*CalcRequest)(nil),   // 0: calculator.CalcRequest
-	(*CalcResponse)(nil),  // 1: calculator.CalcResponse
-	(*PrintRequest)(nil),  // 2: calculator.PrintRequest
-	(*PrintResponse)(nil), // 3: calculator.PrintResponse
+	(*CalcRequest)(nil),       // 0: calculator.CalcRequest
+	(*CalcResponse)(nil),      // 1: calculator.CalcResponse
+	(*Command)(nil),           // 2: calculator.Command
+	(*CalcCommand)(nil),       // 3: calculator.CalcCommand
+	(*PrintCommand)(nil),      // 4: calculator.PrintCommand
+	(*CalcResponse_Item)(nil), // 5: calculator.CalcResponse.Item
 }
 var file_calc_proto_depIdxs = []int32{
-	0, // 0: calculator.Calculator.Calc:input_type -> calculator.CalcRequest
-	2, // 1: calculator.Calculator.Print:input_type -> calculator.PrintRequest
-	1, // 2: calculator.Calculator.Calc:output_type -> calculator.CalcResponse
-	3, // 3: calculator.Calculator.Print:output_type -> calculator.PrintResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: calculator.CalcRequest.commands:type_name -> calculator.Command
+	5, // 1: calculator.CalcResponse.item:type_name -> calculator.CalcResponse.Item
+	3, // 2: calculator.Command.calc:type_name -> calculator.CalcCommand
+	4, // 3: calculator.Command.print:type_name -> calculator.PrintCommand
+	0, // 4: calculator.Calculator.Calc:input_type -> calculator.CalcRequest
+	1, // 5: calculator.Calculator.Calc:output_type -> calculator.CalcResponse
+	5, // [5:6] is the sub-list for method output_type
+	4, // [4:5] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_calc_proto_init() }
@@ -219,13 +452,17 @@ func file_calc_proto_init() {
 	if File_calc_proto != nil {
 		return
 	}
+	file_calc_proto_msgTypes[2].OneofWrappers = []any{
+		(*Command_Calc)(nil),
+		(*Command_Print)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_calc_proto_rawDesc), len(file_calc_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

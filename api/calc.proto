@@ -4,7 +4,6 @@ package calculator;
 
 option go_package = "/pkg/calculator";
 
-//import "validate/validate.proto";
 import "google/api/annotations.proto";
 
 service Calculator {
@@ -17,9 +16,37 @@ service Calculator {
 }
 
 message CalcRequest {
-
+  repeated Command commands = 1;
 }
 
 message CalcResponse{
+  repeated Item item = 1;
 
+  message Item {
+    string var = 1;
+    float value = 2;
+  }
+
+   int64 duration = 3;
+}
+
+message Command {
+  string type = 1;
+
+  oneof command {
+    CalcCommand calc = 2;
+    PrintCommand  print = 3;
+  }
+}
+
+message CalcCommand {
+  string op = 1;
+  string var = 2;
+  string sign = 3;
+  float left = 4;
+  float right = 5;
+}
+
+message PrintCommand {
+  string var = 1;
 }
