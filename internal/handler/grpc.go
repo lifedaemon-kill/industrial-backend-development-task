@@ -9,7 +9,7 @@ import (
 )
 
 type Service interface {
-	Calc(context.Context, *calculator.CalcRequest) ([]domain.Var, error)
+	Calc(context.Context, []*calculator.Command) ([]domain.Var, error)
 }
 
 type Handler struct {
@@ -22,9 +22,8 @@ func New(service Service) *Handler {
 }
 
 func (h Handler) Calc(ctx context.Context, req *calculator.CalcRequest) (*calculator.CalcResponse, error) {
-
 	start := time.Now()
-	items, err := h.service.Calc(ctx, req)
+	items, err := h.service.Calc(ctx, req.Commands)
 	end := time.Now()
 	duration := end.Sub(start).Milliseconds()
 	if err != nil {

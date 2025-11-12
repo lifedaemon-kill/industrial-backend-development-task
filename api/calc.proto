@@ -4,7 +4,19 @@ package calculator;
 
 option go_package = "/pkg/calculator";
 
+import "protoc-gen-openapiv2/options/openapiv2.proto";
 import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Калькулятор"
+    version: "1.0.0"
+    description: "gRPC / http приложение для подсчета и вывода значений"
+  }
+  host: "localhost:8080"
+  schemes: HTTP
+};
 
 service Calculator {
   rpc Calc(CalcRequest) returns (CalcResponse) {
@@ -24,29 +36,39 @@ message CalcResponse{
 
   message Item {
     string var = 1;
-    float value = 2;
+    int32 value = 2;
   }
 
-   int64 duration = 3;
+  int32 duration = 3;
 }
 
 message Command {
-  string type = 1;
+  Type type = 1;
 
   oneof command {
     CalcCommand calc = 2;
-    PrintCommand  print = 3;
+    PrintCommand print = 3;
   }
 }
 
 message CalcCommand {
-  string op = 1;
+  Operation op = 1;
   string var = 2;
-  string sign = 3;
-  float left = 4;
-  float right = 5;
+  string left = 4;
+  string right = 5;
 }
 
 message PrintCommand {
   string var = 1;
+}
+
+enum Operation{;
+  Plus = 0;
+  Substraction = 1;
+  Multiply = 2;
+}
+
+enum Type {
+  Calc = 0;
+  Print = 1;
 }

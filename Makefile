@@ -1,7 +1,10 @@
 API_DIR := api
 THIRD_PARTY_DIR := .vendor-proto
+
 GOOGLE_API_DIR := $(THIRD_PARTY_DIR)/google/api
 VALIDATE_DIR := $(THIRD_PARTY_DIR)/validate
+OPENAPIV2_DIR := $(THIRD_PARTY_DIR)/protoc-gen-openapiv2/options
+
 BIN_DIR := bin
 GEN_DIR := pkg/protogen
 PROTO_FILES := $(wildcard $(API_DIR)/**/*.proto) $(wildcard $(API_DIR)/*.proto)
@@ -27,10 +30,10 @@ deps:
 	@echo "Installing protoc plugins into $(BIN_DIR)..."
 	mkdir -p $(BIN_DIR)
 
-	GOBIN=$(abspath $(BIN_DIR)) go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-	GOBIN=$(abspath $(BIN_DIR)) go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-	GOBIN=$(abspath $(BIN_DIR)) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
-	GOBIN=$(abspath $(BIN_DIR)) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+	GOBIN=$(abspath $(BIN_DIR)) GOPROXY=direct go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	GOBIN=$(abspath $(BIN_DIR)) GOPROXY=direct go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	GOBIN=$(abspath $(BIN_DIR)) GOPROXY=direct go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+	GOBIN=$(abspath $(BIN_DIR)) GOPROXY=direct go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 
 	@echo "Downloading Google API proto files..."
 	mkdir -p $(GOOGLE_API_DIR)
@@ -40,6 +43,11 @@ deps:
 	@echo "Downloading validate.proto..."
 	mkdir -p $(VALIDATE_DIR)
 	curl -sSL https://raw.githubusercontent.com/bufbuild/protoc-gen-validate/main/validate/validate.proto -o $(VALIDATE_DIR)/validate.proto
+
+	@echo "Downloading openapiv2 proto files..."
+	mkdir -p $(OPENAPIV2_DIR)
+	curl -sSL https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/v2.13.0/protoc-gen-openapiv2/options/openapiv2.proto -o $(OPENAPIV2_DIR)/openapiv2.proto
+	curl -sSL https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/v2.13.0/protoc-gen-openapiv2/options/annotations.proto -o $(OPENAPIV2_DIR)/annotations.proto
 
 generate:
 	@echo "Generating code..."

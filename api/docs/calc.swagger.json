@@ -2,17 +2,17 @@
   "swagger": "2.0",
   "info": {
     "title": "Калькулятор",
-    "version": "1.0.0",
-    "description": "gRPC / http приложение для подсчета и вывода значений"
+    "description": "gRPC / http приложение для подсчета и вывода значений",
+    "version": "1.0.0"
   },
-  "host": "localhost:8080",
-  "schemes": [
-    "http"
-  ],
   "tags": [
     {
       "name": "Calculator"
     }
+  ],
+  "host": "localhost:8080",
+  "schemes": [
+    "http"
   ],
   "consumes": [
     "application/json"
@@ -62,8 +62,8 @@
           "type": "string"
         },
         "value": {
-          "type": "number",
-          "format": "float"
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -71,21 +71,16 @@
       "type": "object",
       "properties": {
         "op": {
-          "type": "string"
+          "$ref": "#/definitions/calculatorOperation"
         },
         "var": {
           "type": "string"
         },
-        "sign": {
+        "left": {
           "type": "string"
         },
-        "left": {
-          "type": "number",
-          "format": "float"
-        },
         "right": {
-          "type": "number",
-          "format": "float"
+          "type": "string"
         }
       }
     },
@@ -112,8 +107,8 @@
           }
         },
         "duration": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -121,7 +116,7 @@
       "type": "object",
       "properties": {
         "type": {
-          "type": "string"
+          "$ref": "#/definitions/calculatorType"
         },
         "calc": {
           "$ref": "#/definitions/calculatorCalcCommand"
@@ -131,6 +126,15 @@
         }
       }
     },
+    "calculatorOperation": {
+      "type": "string",
+      "enum": [
+        "Plus",
+        "Substraction",
+        "Multiply"
+      ],
+      "default": "Plus"
+    },
     "calculatorPrintCommand": {
       "type": "object",
       "properties": {
@@ -138,6 +142,14 @@
           "type": "string"
         }
       }
+    },
+    "calculatorType": {
+      "type": "string",
+      "enum": [
+        "Calc",
+        "Print"
+      ],
+      "default": "Calc"
     },
     "protobufAny": {
       "type": "object",

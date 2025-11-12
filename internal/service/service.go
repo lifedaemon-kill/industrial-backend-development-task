@@ -2,37 +2,39 @@ package service
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/lifedaemon-kill/industrial-backend-development-task/internal/domain"
 	calculator "github.com/lifedaemon-kill/industrial-backend-development-task/pkg/protogen"
 )
 
-type Strategy interface {
-	AddTaskCalc()
-	AddTaskPrint()
-	Execute() ([]domain.Var, error)
+type Executor interface {
+	AddTaskCalc(*calculator.CalcCommand)
+	AddTaskPrint(*calculator.PrintCommand)
+	Execute() []calculator.CalcResponse_Item
 }
+
 type Service struct {
-	strategy Strategy
+	executor Executor
 }
 
-func New(strategy Strategy) *Service {
+func New(executor Executor) *Service {
 	return &Service{
-		strategy: strategy,
+		executor: executor,
 	}
 }
 
-func (s *Service) Calc(ctx context.Context, req *calculator.CalcRequest) ([]domain.Var, error) {
-	for _, cmd := range req.Commands {
-		switch cmd.Type {
-		case "calc":
-			_ = cmd.GetCalc()
-			s.strategy.AddTaskCalc()
-		case "print":
-			_ = cmd.GetPrint()
-			s.strategy.AddTaskPrint()
+func (s *Service) Calc(ctx context.Context, commands []*calculator.Command) ([]calculator.CalcResponse_Item, error) {
+	for _, command := range commands {
+		switch command.Type {
+		case calculator.Type_Calc:
+			s.executor.AddTaskCalc(command.GetCalc())
+		case calculator.Type_Print:
+			s.executor.AddTaskPrint(command.GetPrint())
+		default:
+			return nil, fmt.Errorf("unknown command type %s", command.Type)
 		}
+
 	}
 
-	return s.strategy.Execute()
+	return s.executor.Execute(), nil
 }
