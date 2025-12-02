@@ -115,12 +115,7 @@ func (e *Executor) Execute() (out map[string]int64, execErr error) {
 					results.Store(n.instr.Var, val)
 				} else {
 					errmu.Lock()
-					if execErr == nil {
-						execErr = err
-					} else {
-						errors.Join(execErr, err)
-					}
-
+					execErr = errors.Join(execErr, err)
 					errmu.Unlock()
 				}
 
