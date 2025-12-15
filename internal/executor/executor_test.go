@@ -15,13 +15,13 @@ var multi = calculator.Operation_Multiply
 
 func TestSimpleCalc(t *testing.T) {
 	t.Parallel()
-	instructions := []*calculator.CalcRequest_Instruction{
+	instructions := []*calculator.CalcRequest_Instructions{
 		{
 			Type: calculator.Type_Calc,
 			Var:  "x",
 			Op:   &plus,
-			Left: &calculator.CalcRequest_Instruction_LeftLiteral{LeftLiteral: 1},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{
+			Left: &calculator.CalcRequest_Instructions_LeftLiteral{LeftLiteral: 1},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{
 				RightLiteral: 2,
 			},
 		},
@@ -39,27 +39,27 @@ func TestSimpleCalc(t *testing.T) {
 
 func TestCalcChain(t *testing.T) {
 	t.Parallel()
-	instructions := []*calculator.CalcRequest_Instruction{
+	instructions := []*calculator.CalcRequest_Instructions{
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "x",
 			Op:    &plus,
-			Left:  &calculator.CalcRequest_Instruction_LeftLiteral{LeftLiteral: 10},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 2},
+			Left:  &calculator.CalcRequest_Instructions_LeftLiteral{LeftLiteral: 10},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 2},
 		},
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "y",
 			Op:    &multi,
-			Left:  &calculator.CalcRequest_Instruction_LeftVar{LeftVar: "x"},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 5},
+			Left:  &calculator.CalcRequest_Instructions_LeftVar{LeftVar: "x"},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 5},
 		},
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "q",
 			Op:    &sub,
-			Left:  &calculator.CalcRequest_Instruction_LeftVar{LeftVar: "y"},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 20},
+			Left:  &calculator.CalcRequest_Instructions_LeftVar{LeftVar: "y"},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 20},
 		},
 		{
 			Type: calculator.Type_Print,
@@ -87,27 +87,27 @@ func TestCalcChain(t *testing.T) {
 func TestIgnoreUnused(t *testing.T) {
 	t.Parallel()
 
-	instructions := []*calculator.CalcRequest_Instruction{
+	instructions := []*calculator.CalcRequest_Instructions{
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "x",
 			Op:    &plus,
-			Left:  &calculator.CalcRequest_Instruction_LeftLiteral{LeftLiteral: 10},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 2},
+			Left:  &calculator.CalcRequest_Instructions_LeftLiteral{LeftLiteral: 10},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 2},
 		},
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "unusedA",
 			Op:    &plus,
-			Left:  &calculator.CalcRequest_Instruction_LeftVar{LeftVar: "x"},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 100},
+			Left:  &calculator.CalcRequest_Instructions_LeftVar{LeftVar: "x"},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 100},
 		},
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "unusedB",
 			Op:    &multi,
-			Left:  &calculator.CalcRequest_Instruction_LeftVar{LeftVar: "unusedA"},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 2},
+			Left:  &calculator.CalcRequest_Instructions_LeftVar{LeftVar: "unusedA"},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 2},
 		},
 		{
 			Type: calculator.Type_Print,
@@ -128,20 +128,20 @@ func TestIgnoreUnused(t *testing.T) {
 
 func TestParallelSpeed(t *testing.T) {
 	t.Parallel()
-	instructions := []*calculator.CalcRequest_Instruction{
+	instructions := []*calculator.CalcRequest_Instructions{
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "a",
 			Op:    &multi,
-			Left:  &calculator.CalcRequest_Instruction_LeftLiteral{LeftLiteral: 10},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 2},
+			Left:  &calculator.CalcRequest_Instructions_LeftLiteral{LeftLiteral: 10},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 2},
 		},
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "b",
 			Op:    &plus,
-			Left:  &calculator.CalcRequest_Instruction_LeftLiteral{LeftLiteral: 5},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 7},
+			Left:  &calculator.CalcRequest_Instructions_LeftLiteral{LeftLiteral: 5},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 7},
 		},
 		{
 			Type: calculator.Type_Print,
@@ -167,13 +167,13 @@ func TestParallelSpeed(t *testing.T) {
 
 func TestMissingVariableError(t *testing.T) {
 	t.Parallel()
-	instructions := []*calculator.CalcRequest_Instruction{
+	instructions := []*calculator.CalcRequest_Instructions{
 		{
 			Type:  calculator.Type_Calc,
 			Var:   "x",
 			Op:    &plus,
-			Left:  &calculator.CalcRequest_Instruction_LeftVar{LeftVar: "unknown"},
-			Right: &calculator.CalcRequest_Instruction_RightLiteral{RightLiteral: 10},
+			Left:  &calculator.CalcRequest_Instructions_LeftVar{LeftVar: "unknown"},
+			Right: &calculator.CalcRequest_Instructions_RightLiteral{RightLiteral: 10},
 		},
 	}
 

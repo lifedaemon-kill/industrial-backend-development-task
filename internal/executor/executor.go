@@ -10,7 +10,7 @@ import (
 )
 
 type node struct {
-	instr      *calculator.CalcRequest_Instruction
+	instr      *calculator.CalcRequest_Instructions
 	depsCount  int32
 	dependents []*node
 }
@@ -18,11 +18,11 @@ type node struct {
 type Executor struct {
 	nodes       map[string]*node
 	printVars   map[string]bool
-	allInstrs   []*calculator.CalcRequest_Instruction
+	allInstrs   []*calculator.CalcRequest_Instructions
 	workerCount int
 }
 
-func NewExecutor(instrs []*calculator.CalcRequest_Instruction, workerCount int) *Executor {
+func NewExecutor(instrs []*calculator.CalcRequest_Instructions, workerCount int) *Executor {
 	e := &Executor{
 		nodes:       make(map[string]*node),
 		printVars:   make(map[string]bool),
@@ -51,7 +51,7 @@ func NewExecutor(instrs []*calculator.CalcRequest_Instruction, workerCount int) 
 	return e
 }
 
-func (e *Executor) findVarDeps(in *calculator.CalcRequest_Instruction) []string {
+func (e *Executor) findVarDeps(in *calculator.CalcRequest_Instructions) []string {
 	var out []string
 	if in.GetLeftVar() != "" {
 		out = append(out, in.GetLeftVar())

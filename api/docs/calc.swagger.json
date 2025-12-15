@@ -55,7 +55,7 @@
     }
   },
   "definitions": {
-    "CalcRequestInstruction": {
+    "CalcRequestInstructions": {
       "type": "object",
       "properties": {
         "type": {
@@ -99,11 +99,11 @@
     "calculatorCalcRequest": {
       "type": "object",
       "properties": {
-        "instruction": {
+        "instructions": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/CalcRequestInstruction"
+            "$ref": "#/definitions/CalcRequestInstructions"
           }
         }
       }

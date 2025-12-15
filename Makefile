@@ -19,7 +19,7 @@ PROTOC_GEN_OPENAPIV2 := $(BIN_DIR)/protoc-gen-openapiv2
 
 all: run
 
-run: deps generate build
+run: deps up
 
 build:
 	docker-compose up --build

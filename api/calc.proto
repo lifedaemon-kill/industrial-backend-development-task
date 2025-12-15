@@ -27,9 +27,9 @@ service Calculator {
 }
 
 message CalcRequest {
-  repeated Instruction instruction = 1;
+  repeated Instructions instructions = 1;
 
-  message Instruction{
+  message Instructions{
     Type type = 1;
     string var = 2;
     optional Operation op = 3; // "+","-","*"
