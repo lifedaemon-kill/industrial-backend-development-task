@@ -15,9 +15,12 @@ PROTOC_GEN_GRPC_GATEWAY := $(BIN_DIR)/protoc-gen-grpc-gateway
 PROTOC_GEN_OPENAPIV2 := $(BIN_DIR)/protoc-gen-openapiv2
 
 
-.PHONY: all deps generate clean run up build
+.PHONY: all deps generate clean run up build industrial
 
 all: run
+
+industrial:
+	go run ./cmd/main.go
 
 run: deps up
 

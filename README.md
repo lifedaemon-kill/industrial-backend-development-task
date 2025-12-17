@@ -16,7 +16,7 @@ make run
 ### Локальный запуск без докера
 ```bash
 make deps
-make industrial-life-better
+make industrial
 ```
 
 ### Swagger http://localhost:8081/swagger/index.html
@@ -75,3 +75,9 @@ make industrial-life-better
 Получили х = 7
 Время работы 50 мс = 1 операция
 
+---
+### Пример 2
+Пример с параллельностью
+
+---
+### 
